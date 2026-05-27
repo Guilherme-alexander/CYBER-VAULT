@@ -81,8 +81,8 @@ Quando **desbloqueado**, a pasta aparece no sistema de arquivos normalmente. Um 
 │  ROBCO INDUSTRIES (TM) TERMLINK PROTOCOL        █   │
 ├─────────────────────────────────────────────────────┤
 │                                                     │
-│              C Y B E R   V A U L T                  │
-│        >> ENCRYPTED SECURE WORKSPACE <<             │
+│                 C Y B E R   V A U L T               │
+│           >> ENCRYPTED SECURE WORKSPACE <<          │
 │  ─────────────────────────────────────────────────  │
 │  > USERNAME:                                        │
 │  ┌─────────────────────────────────────────────┐    │
@@ -94,12 +94,17 @@ Quando **desbloqueado**, a pasta aparece no sistema de arquivos normalmente. Um 
 │  └─────────────────────────────────────────────┘    │
 │                                                     │
 │  ┌─────────────────────────────────────────────┐    │
-│  │          > UNLOCK VAULT <                   │    │
+│  │               > UNLOCK VAULT <              │    │
 │  └─────────────────────────────────────────────┘    │
 │                                                     │
 │  STATE: LOCKED  │  AES-256-GCM  │  PBKDF2 x300000   │
 └─────────────────────────────────────────────────────┘
 ```
+<details>
+<summary>Show Image</summary>
+<img width="600" src="https://github.com/Guilherme-alexander/CYBER-VAULT/blob/main/assets/window.py.jpeg" />
+</details>
+
 
 *Tema terminal Fallout — fonte pixelada, fósforo verde, fundo preto*
 
