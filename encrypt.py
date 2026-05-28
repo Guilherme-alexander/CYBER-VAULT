@@ -12,16 +12,11 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 
-
 PBKDF2_ITERATIONS = 300_000
 KEY_LENGTH = 32
 CHUNK_SIZE = 8192
 
-
-# ======================================================
 # password -> AES key
-# ======================================================
-
 def derive_key(password: str, salt: bytes, iterations: int = PBKDF2_ITERATIONS) -> bytes:
     kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
@@ -36,11 +31,7 @@ def password_hash(password: str, salt: bytes, iterations: int = PBKDF2_ITERATION
     key = derive_key(password=password, salt=salt, iterations=iterations)
     return hashlib.sha256(key).hexdigest()
 
-
-# ======================================================
 # zip helpers
-# ======================================================
-
 def folder_to_zip_bytes(folder: Path) -> bytes:
     temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".zip")
     temp_path = Path(temp_file.name)
@@ -55,7 +46,6 @@ def folder_to_zip_bytes(folder: Path) -> bytes:
     temp_path.unlink(missing_ok=True)
     return data
 
-
 def zip_bytes_to_folder(zip_bytes: bytes, folder: Path) -> None:
     folder.mkdir(parents=True, exist_ok=True)
 
@@ -69,11 +59,7 @@ def zip_bytes_to_folder(zip_bytes: bytes, folder: Path) -> None:
 
     temp_path.unlink(missing_ok=True)
 
-
-# ======================================================
 # AES-GCM
-# ======================================================
-
 def encrypt_blob(raw_data: bytes, key: bytes) -> tuple[bytes, bytes]:
     nonce = secrets.token_bytes(12)
     aes = AESGCM(key)
@@ -85,11 +71,7 @@ def decrypt_blob(nonce: bytes, encrypted: bytes, key: bytes) -> bytes:
     aes = AESGCM(key)
     return aes.decrypt(nonce, encrypted, None)
 
-
-# ======================================================
 # sqlite
-# ======================================================
-
 def init_database(db_path: Path) -> None:
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
@@ -116,7 +98,6 @@ def init_database(db_path: Path) -> None:
     conn.commit()
     conn.close()
 
-
 def save_vault_blob(db_path: Path, nonce: bytes, ciphertext: bytes) -> None:
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
@@ -128,25 +109,19 @@ def save_vault_blob(db_path: Path, nonce: bytes, ciphertext: bytes) -> None:
     conn.commit()
     conn.close()
 
-
 def load_vault_blob(db_path: Path) -> tuple[bytes, bytes] | None:
     conn = sqlite3.connect(db_path)
     row = conn.execute("SELECT nonce, ciphertext FROM vault LIMIT 1").fetchone()
     conn.close()
     return (row[0], row[1]) if row else None
 
-
-# ======================================================
 # vault actions
-# ======================================================
-
 def lock_folder(folder: Path, db_path: Path, password: str, salt: bytes) -> None:
     key = derive_key(password=password, salt=salt)
     zip_bytes = folder_to_zip_bytes(folder)
     nonce, encrypted = encrypt_blob(zip_bytes, key)
     save_vault_blob(db_path=db_path, nonce=nonce, ciphertext=encrypted)
     secure_clear_folder(folder)
-
 
 def unlock_folder(folder: Path, db_path: Path, password: str, salt: bytes) -> None:
     data = load_vault_blob(db_path)
@@ -160,11 +135,7 @@ def unlock_folder(folder: Path, db_path: Path, password: str, salt: bytes) -> No
     zip_bytes = decrypt_blob(nonce, encrypted, key)
     zip_bytes_to_folder(zip_bytes, folder)
 
-
-# ======================================================
 # secure wipe
-# ======================================================
-
 def wipe_file(file_path: Path) -> None:
     if not file_path.exists():
         return
