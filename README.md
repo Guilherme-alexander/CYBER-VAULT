@@ -211,8 +211,8 @@ O wizard interativo vai pedir localização, nome da pasta, usuário e senha. Ao
   Nome da pasta secreta > arquivos
 
   PASSO 3 / 4  —  CREDENCIAIS
-  Usuário > casap
-  Senha   > ••••••••
+  Usuário > USER
+  Senha   > •••••••••••
 
   PASSO 4 / 4  —  CONSTRUINDO VAULT
   |   Criando estrutura de pastas...
